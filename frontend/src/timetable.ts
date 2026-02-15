@@ -56,9 +56,74 @@ const timetableData: TimetableData = {
 
     
 
+export { timetableData };
+
 // ===============================
 // MAIN SETUP FUNCTION
 // ===============================
+// ===============================
+// GENERAL SLOT CONFIG
+// ===============================
+
+const GENERAL_SLOTS = [
+    { start: "08.00", end: "09.00" },
+    { start: "09.00", end: "10.00" },
+    { start: "10.30", end: "11.30" },
+    { start: "11.30", end: "12.30" },
+    { start: "14.00", end: "15.00" },
+    { start: "15.30", end: "16.30" }
+];
+
+const SPLIT_DAYS = ["Tuesday", "Thursday", "Saturday"];
+
+function normalizeDaySchedule(day: string, scheduleText: string): string {
+
+    if (!SPLIT_DAYS.includes(day)) {
+        return scheduleText; // Do nothing for Mon/Wed/Fri
+    }
+
+    const entries = scheduleText.split(",").map(e => e.trim());
+    const result: string[] = [];
+
+    for (const entry of entries) {
+
+        const match = entry.match(/(\d{2}\.\d{2})-(\d{2}\.\d{2}):\s*(.+)/);
+
+        if (!match) {
+            result.push(entry);
+            continue;
+        }
+
+        const rangeStart = match[1];
+        const rangeEnd = match[2];
+        const subjects = match[3].split(/,|&/).map(s => s.trim());
+
+        // If already exact 1-hour slot → keep it
+        const isExactSlot = GENERAL_SLOTS.some(
+            slot => slot.start === rangeStart && slot.end === rangeEnd
+        );
+
+        if (isExactSlot) {
+            result.push(entry);
+            continue;
+        }
+
+        // Split into valid slots
+        const validSlots = GENERAL_SLOTS.filter(
+            slot => slot.start >= rangeStart && slot.end <= rangeEnd
+        );
+
+        validSlots.forEach((slot, index) => {
+            if (subjects[index]) {
+                result.push(
+                    `${slot.start}-${slot.end}: ${subjects[index]}`
+                );
+            }
+        });
+    }
+
+    return result.join(", ");
+}
 
 export function setupTimetable(): void {
 
@@ -137,6 +202,10 @@ function showTimetable(
     }
 
     const scheduleText = student[day] as string | undefined;
+    const processedSchedule = scheduleText
+    ? normalizeDaySchedule(day, scheduleText)
+    : undefined;
+
 
     if (!scheduleText) {
         resultDiv.innerHTML =
@@ -146,9 +215,10 @@ function showTimetable(
         return;
     }
 
-    const sessions = scheduleText
-        .split(",")
-        .map(s => s.trim());
+   const sessions = processedSchedule
+    ?.split(",")
+    .map(s => s.trim()) || [];
+
 
     // Process each session to extract time and subject
     const timeSlots = sessions.map(session => {

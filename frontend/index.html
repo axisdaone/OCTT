@@ -9,13 +9,15 @@
   <body>
     <div class="background-circles"></div>
     
-    <div class="container">
+    <!-- Login Container (shown initially) -->
+    <div id="loginContainer" class="container">
       <div class="box">
         <header>
-          <h2>OC Timetable </h2>
+          <h2>OC Timetable</h2>
           <p>Timetable management system</p>
         </header>
 
+        <!-- Login Section -->
         <div id="authSection">
           <div class="input-group">
             <label for="user">Username</label>
@@ -46,6 +48,99 @@
           <div id="authMsg" style="margin-top: 15px; text-align: center; font-size: 14px;"></div>
         </div>
       </div>
+    </div>
+
+    <!-- Full Screen App Container (hidden initially, shown after login) -->
+    <div id="appContainer" class="app-container" style="display: none;">
+      <!-- Header with Hamburger Menu and Logout -->
+      <header class="app-header">
+        <div class="header-left">
+          <button id="hamburgerBtn" class="hamburger-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1 class="app-title">OC Timetable</h1>
+        </div>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      </header>
+
+      <!-- Mobile Navigation Menu -->
+      <nav id="mobileMenu" class="mobile-menu">
+        <ul class="menu-list">
+          <li><a href="#" data-tab="oc-timetable" class="menu-link">OC Timetable</a></li>
+          <li><a href="#" data-tab="available-oc" class="menu-link">Available OC</a></li>
+          <li><a href="#" data-tab="all-ocs" class="menu-link">All OCs</a></li>
+        </ul>
+      </nav>
+
+      <!-- Main Content Area -->
+      <main class="app-main">
+        <!-- OC Timetable Tab -->
+        <div id="oc-timetable" class="tab-content active">
+          <div class="content-card">
+            <h2 class="content-title">OC Timetable</h2>
+            <div class="input-group">
+              <label for="ocName">Select OC</label>
+              <select id="ocName">
+                <option value="" disabled selected>Choose an OC...</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="day">Select Day</label>
+              <select id="day">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+            </div>
+            <button id="checkBtn" class="btn-show">Check Schedule</button>
+            <div id="result" style="margin-top: 20px;"></div>
+          </div>
+        </div>
+
+        <!-- Available OC Tab -->
+        <div id="available-oc" class="tab-content">
+          <div class="content-card">
+            <h2 class="content-title">Available OC</h2>
+            <div class="input-group">
+              <label for="checkTime">Check Time</label>
+              <input type="time" id="checkTime" placeholder="Select time" />
+            </div>
+            <div class="input-group">
+              <label for="checkDay">Select Day</label>
+              <select id="checkDay">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+            </div>
+            <button id="checkAvailabilityBtn" class="btn-show">Check Availability</button>
+            <div id="availabilityResult" style="margin-top: 20px;"></div>
+          </div>
+        </div>
+
+        <!-- All OCs Tab -->
+        <div id="all-ocs" class="tab-content">
+          <div class="content-card">
+            <h2 class="content-title">All OCs</h2>
+            <div class="input-group">
+              <label for="ocSelect">Select OC</label>
+              <select id="ocSelect">
+                <option value="" disabled selected>Choose an OC...</option>
+              </select>
+            </div>
+            <button id="viewWeekBtn" class="btn-show">View Week Timetable</button>
+            <div id="weekResult" style="margin-top: 20px;"></div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script type="module" src="/src/main.ts"></script>

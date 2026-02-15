@@ -28,8 +28,8 @@ export function setupAuth() {
             loginBox.style.display = "none";
             registerBox.style.display = "block";
         } else {
-            title.innerText = "OC Timetable Pro";
-            desc.innerText = "Your personal timetable management system";
+            title.innerText = "OC Timetable";
+            desc.innerText = "Timetable management system";
             loginBox.style.display = "block";
             registerBox.style.display = "none";
         }
@@ -57,73 +57,166 @@ export function setupAuth() {
     (window as any).handleLogin = () => {
         const u = (document.getElementById('user') as HTMLInputElement).value.trim();
         const p = (document.getElementById('pass') as HTMLInputElement).value.trim();
-        const storedU = localStorage.getItem('oc_username');
-        const storedP = localStorage.getItem('oc_password');
         const msg = document.getElementById('authMsg') as HTMLElement;
 
-        // Check default accounts first
-        const adminAccount = JSON.parse(localStorage.getItem('oc_admin_account') || '{}');
-        const userAccount = JSON.parse(localStorage.getItem('oc_user_account') || '{}');
+        console.log('Login attempt:', { username: u, hasPassword: !!p });
 
-        if ((u === 'admin' && p === adminAccount.password) || 
-            (u === 'user' && p === userAccount.password)) {
-            
-            const role = u === 'admin' ? 'admin' : 'user';
-            sessionStorage.setItem('isLoggedIn', 'true');
-            sessionStorage.setItem('currentUser', u);
-            sessionStorage.setItem('userRole', role);
-            window.location.href = "/timetable.html";
-            return;
-        }
-
-        // Check registered accounts
-        if (!storedU || !storedP) {
-            msg.innerText = "Invalid credentials. Try admin/admin123 or user/user123";
+        if (!u || !p) {
+            msg.innerText = "Please enter username and password.";
             msg.style.color = "#ef4444";
             return;
         }
 
+        // Check default accounts from localStorage
+        const adminAccount = JSON.parse(localStorage.getItem('oc_admin_account') || 'null');
+        const userAccount = JSON.parse(localStorage.getItem('oc_user_account') || 'null');
+
+        console.log('Stored accounts:', { adminAccount, userAccount });
+
+        // Check admin credentials
+        if (u === 'admin' && adminAccount && adminAccount.password === p) {
+            console.log('Admin login successful');
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('currentUser', u);
+            sessionStorage.setItem('userRole', adminAccount.role || 'admin');
+            
+            msg.innerText = "Login successful! Loading...";
+            msg.style.color = "#4ade80";
+            
+            // Hide login and show full-screen app
+            setTimeout(() => {
+                const loginContainer = document.getElementById("loginContainer");
+                const appContainer = document.getElementById("appContainer");
+                
+                console.log('Switching to full-screen app');
+                if (loginContainer) loginContainer.style.display = "none";
+                if (appContainer) appContainer.style.display = "flex";
+                
+                // Initialize tab functionality after login
+                if ((window as any).initializeTabs) {
+                    (window as any).initializeTabs();
+                } else {
+                    console.error('initializeTabs function not found');
+                }
+            }, 1000);
+            return;
+        }
+
+        // Check user credentials
+        if (u === 'user' && userAccount && userAccount.password === p) {
+            console.log('User login successful');
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('currentUser', u);
+            sessionStorage.setItem('userRole', userAccount.role || 'user');
+            
+            msg.innerText = "Login successful! Loading...";
+            msg.style.color = "#4ade80";
+            
+            // Hide login and show full-screen app
+            setTimeout(() => {
+                const loginContainer = document.getElementById("loginContainer");
+                const appContainer = document.getElementById("appContainer");
+                
+                console.log('Switching to full-screen app');
+                if (loginContainer) loginContainer.style.display = "none";
+                if (appContainer) appContainer.style.display = "flex";
+                
+                // Initialize tab functionality after login
+                if ((window as any).initializeTabs) {
+                    (window as any).initializeTabs();
+                } else {
+                    console.error('initializeTabs function not found');
+                }
+            }, 1000);
+            return;
+        }
+
+        // Check stored credentials (for registered users)
+        const storedU = localStorage.getItem('oc_username');
+        const storedP = localStorage.getItem('oc_password');
+
         if (u === storedU && p === storedP) {
+            console.log('Registered user login successful');
             sessionStorage.setItem('isLoggedIn', 'true');
             sessionStorage.setItem('currentUser', u);
             sessionStorage.setItem('userRole', 'user');
-            window.location.href = "/timetable.html";
+            
+            msg.innerText = "Login successful! Loading...";
+            msg.style.color = "#4ade80";
+            
+            // Hide login and show full-screen app
+            setTimeout(() => {
+                const loginContainer = document.getElementById("loginContainer");
+                const appContainer = document.getElementById("appContainer");
+                
+                console.log('Switching to full-screen app');
+                if (loginContainer) loginContainer.style.display = "none";
+                if (appContainer) appContainer.style.display = "flex";
+                
+                // Initialize tab functionality after login
+                if ((window as any).initializeTabs) {
+                    (window as any).initializeTabs();
+                } else {
+                    console.error('initializeTabs function not found');
+                }
+            }, 1000);
         } else {
+            console.log('Login failed');
             msg.innerText = "Invalid credentials. Try admin/admin123 or user/user123";
             msg.style.color = "#ef4444";
         }
     };
 
-    // Add event listeners
-    document.addEventListener('DOMContentLoaded', () => {
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
-        
-        if (loginBtn) {
-            loginBtn.addEventListener('click', (window as any).handleLogin);
-        }
-        
-        if (registerBtn) {
-            registerBtn.addEventListener('click', (window as any).handleRegister);
-        }
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
 
-        // Add enter key support
-        const userInput = document.getElementById('user') as HTMLInputElement;
-        const passInput = document.getElementById('pass') as HTMLInputElement;
-        
-        if (userInput && passInput) {
-            [userInput, passInput].forEach(input => {
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        const loginBox = document.getElementById('loginActions');
-                        if (loginBox && loginBox.style.display !== 'none') {
-                            (window as any).handleLogin();
-                        } else {
-                            (window as any).handleRegister();
-                        }
+    if (loginBtn) {
+        loginBtn.addEventListener('click', (window as any).handleLogin);
+    }
+
+    if (registerBtn) {
+        registerBtn.addEventListener('click', (window as any).handleRegister);
+    }
+
+    // Add enter key support
+    const userInput = document.getElementById('user') as HTMLInputElement;
+    const passInput = document.getElementById('pass') as HTMLInputElement;
+
+    if (userInput && passInput) {
+        [userInput, passInput].forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const loginBox = document.getElementById('loginActions');
+                    if (loginBox && loginBox.style.display !== 'none') {
+                        (window as any).handleLogin();
+                    } else {
+                        (window as any).handleRegister();
                     }
-                });
+                }
             });
-        }
-    });
+        });
+    }
+}
+
+export function logout(): void {
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("currentUser");
+    sessionStorage.removeItem("userRole");
+    localStorage.removeItem("isAutoLoggedIn");
+    
+    // Show login container and hide full-screen app
+    const loginContainer = document.getElementById("loginContainer");
+    const appContainer = document.getElementById("appContainer");
+    
+    if (loginContainer) loginContainer.style.display = "flex";
+    if (appContainer) appContainer.style.display = "none";
+    
+    // Clear form
+    const user_input = document.getElementById("user") as HTMLInputElement;
+    const pass_input = document.getElementById("pass") as HTMLInputElement;
+    const msg = document.getElementById("authMsg") as HTMLElement;
+    
+    if (user_input) user_input.value = "";
+    if (pass_input) pass_input.value = "";
+    if (msg) msg.innerText = "";
 }
