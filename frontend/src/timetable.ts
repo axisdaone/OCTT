@@ -1,10 +1,22 @@
+// ===============================
+// TYPES
+// ===============================
 
-if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-    window.location.href = "login.html";
+interface StudentSchedule {
+    fullDays: string[];
+    [day: string]: string[] | string;
 }
 
-const timetableData = {
-    "Aanchal Ajmera": { "fullDays": ["Monday", "Wednesday", "Friday"], "Monday": "09.00-11.30: DBSL-4CCE-A1 Lab, 14.00-15.00: PAO, 15.30-16.30: DBS", "Tuesday": "08.00-09.00: DAA, 09.00-10.00: OS, 10.30-11.30: IAI, 11.30-12.30: PAO", "Wednesday": "09.00-11.30: OSDL-4CCE-A2 Lab, 14.00-15.00: DBS, 15.30-16.30: DAA", "Thursday": "08.00-09.00: OS, 09.00-10.00: IAI, 10.30-11.30: PAO, 11.30-12.30: DBS", "Friday": "09.00-11.30: OSL-4CCE-A2 Lab, 14.00-15.00: DAA, 15.30-16.30: OS", "Saturday": "09.00-10.00: DBS, 10.30-11.30: DAA, 11.30-12.30: IAI" },
+type TimetableData = {
+    [studentName: string]: StudentSchedule;
+};
+
+// ===============================
+// TIMETABLE DATA
+// ===============================
+
+const timetableData: TimetableData = {
+ "Aanchal Ajmera": { "fullDays": ["Monday", "Wednesday", "Friday"], "Monday": "09.00-11.30: DBSL-4CCE-A1 Lab, 14.00-15.00: PAO, 15.30-16.30: DBS", "Tuesday": "08.00-09.00: DAA, 09.00-10.00: OS, 10.30-11.30: IAI, 11.30-12.30: PAO", "Wednesday": "09.00-11.30: OSDL-4CCE-A2 Lab, 14.00-15.00: DBS, 15.30-16.30: DAA", "Thursday": "08.00-09.00: OS, 09.00-10.00: IAI, 10.30-11.30: PAO, 11.30-12.30: DBS", "Friday": "09.00-11.30: OSL-4CCE-A2 Lab, 14.00-15.00: DAA, 15.30-16.30: OS", "Saturday": "09.00-10.00: DBS, 10.30-11.30: DAA, 11.30-12.30: IAI" },
     "Aditya Khanna": { "fullDays": ["Monday", "Wednesday", "Friday"], "Monday": "08.30-12.30: OSDL-4IT-B2 / OSL-4IT-B1 Lab, 14.00-15.00: DAA, 15.30-16.30: DBS", "Tuesday": "08.00-09.00: DAA, 09.00-10.00: PAO, 10.30-11.30: IAI, 11.30-12.30: OS, 14.00-16.30: DBSL-4IT-B1 Lab", "Wednesday": "08.30-11.00: OSL-4IT-B2 Lab, 13.00-14.00: OS, 14.00-15.00: DBS, 15.30-16.30: DAA", "Thursday": "09.00-10.00: IAI, 10.30-11.30: PAO, 11.30-12.30: DBS, 14.00-17.00: OSDL-4IT-B1 Lab", "Friday": "08.30-11.00: DBSL-4IT-B2 Lab, 14.00-15.00: DAA, 15.30-16.30: PAO", "Saturday": "09.00-10.00: IAI, 10.30-11.30: DBS, 11.30-12.30: OS" },
     "Anirvin Shyam Iyer": { "fullDays": ["Monday", "Tuesday", "Saturday"], "Monday": "09.00-11.30: ESD Lab D1, 14.00-15.00: AIC, 15.30-16.30: VLSI", "Tuesday": "08.00-12.30: MCT, ME, EM-IV, DSP, 14.00-16.30: ESD Lab D2", "Wednesday": "14.00-15.00: VLSI, 15.30-16.30: ME", "Thursday": "08.00-12.30: EM-IV, DSP, AIC, VLSI", "Friday": "09.00-11.30: ESDP Lab D1, 14.00-15.00: EM-IV, 15.30-16.30: DSP", "Saturday": "08.00-12.30: AIC, VLSI, MCT, ME, 14.00-16.30: ESDP Lab D2" },
     "Anshul Das": { "fullDays": ["Monday", "Tuesday", "Thursday"], "Monday": "08.30-11.00: DBSL-4AIML-B1 Lab, 14.00-15.00: PAO, 15.30-16.30: DBS", "Tuesday": "08.00-09.00: DAA, 09.00-10.00: IAI, 10.30-11.30: OS, 11.30-12.30: PAO, 14.00-16.30: DBSL-4AIML-B2 Lab", "Wednesday": "09.00-11.30: OSDL-4AIML-B1 Lab, 14.00-15.00: DBS, 15.30-16.30: DAA", "Thursday": "09.00-10.00: OS, 10.30-11.30: PAO, 11.30-12.30: DBS, 14.00-16.30: OSDL-4AIML-B2 Lab", "Friday": "09.00-11.30: OSL-4AIML-B1 Lab, 14.00-15.00: DAA, 15.30-16.30: IAI", "Saturday": "08.00-09.00: OS, 09.00-10.00: DBS, 10.30-11.30: DAA" },
@@ -42,51 +54,203 @@ const timetableData = {
     "adarsh chand jain": { "fullDays": ["Monday", "Tuesday", "Thursday"], "Monday": "09.00-11.30: OSL-4DS-A1 Lab, 14.00-15.00: PAO, 15.30-16.30: DBS", "Tuesday": "09.00-10.00: IAI, 10.30-11.30: DAA, 11.30-12.30: PAO, 14.00-16.30: DBSL-4DS-A1 Lab", "Wednesday": "09.00-11.30: OSL-4DS-A2 Lab, 14.00-15.00: DBS, 15.30-16.30: OS", "Thursday": "08.00-09.00: IAI, 09.00-10.00: DAA, 10.30-11.30: PAO, 11.30-12.30: DBS, 14.00-16.30: OSDL-4DS-A1 Lab", "Friday": "09.00-11.30: DBSL-4DS-A2 Lab, 14.00-15.00: OS, 15.30-16.30: IAI", "Saturday": "08.00-09.00: DAA, 09.00-10.00: DBS, 10.30-11.30: OS" }
 };
 
-
-const dropdown = document.getElementById('ocName');
-if (dropdown) {
-   
-    dropdown.innerHTML = '<option value="" disabled selected>Choose a student...</option>';
     
-   
-    Object.keys(timetableData).sort().forEach(name => {
-        let option = document.createElement('option');
-        option.value = name;
-        option.textContent = name;
-        dropdown.appendChild(option);
+
+// ===============================
+// MAIN SETUP FUNCTION
+// ===============================
+
+export function setupTimetable(): void {
+
+    // 🔐 Session Protection
+    if (sessionStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "/";
+        return;
+    }
+
+    // Display current user and role
+    const currentUser = sessionStorage.getItem("currentUser") || "User";
+    const userRole = sessionStorage.getItem("userRole") || "user";
+    const userDisplay = document.getElementById("currentUser");
+    
+    if (userDisplay) {
+        userDisplay.textContent = `${currentUser} (${userRole})`;
+    }
+
+    const dropdown = document.getElementById("ocName") as HTMLSelectElement;
+    const daySelect = document.getElementById("day") as HTMLSelectElement;
+    const resultDiv = document.getElementById("result") as HTMLElement;
+    const checkBtn = document.getElementById("checkBtn") as HTMLButtonElement;
+    const logoutBtn = document.getElementById("logoutBtn") as HTMLButtonElement;
+
+    populateDropdown(dropdown);
+
+    checkBtn.addEventListener("click", () => {
+        showTimetable(dropdown, daySelect, resultDiv);
     });
+
+    logoutBtn.addEventListener("click", logout);
 }
 
-function showTimetable() {
+
+// ===============================
+// POPULATE DROPDOWN
+// ===============================
+
+function populateDropdown(dropdown: HTMLSelectElement): void {
+
+    dropdown.innerHTML =
+        '<option value="" disabled selected>Choose a student...</option>';
+
+    Object.keys(timetableData)
+        .sort()
+        .forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            dropdown.appendChild(option);
+        });
+}
+
+
+// ===============================
+// SHOW TIMETABLE
+// ===============================
+
+function showTimetable(
+    dropdown: HTMLSelectElement,
+    daySelect: HTMLSelectElement,
+    resultDiv: HTMLElement
+): void {
+
     const nameInput = dropdown.value;
-    const day = document.getElementById('day').value;
-    const resultDiv = document.getElementById('result');
+    const day = daySelect.value;
 
-    if (timetableData[nameInput]) {
-        const entry = timetableData[nameInput];
-        const isFullDay = entry.fullDays.includes(day);
-        const scheduleText = entry[day];
+    const student = timetableData[nameInput];
 
-        if (scheduleText) {
-            const sessions = scheduleText.split(',').map(s => s.trim());
-            let verticalSchedule = sessions.map(s => `<div class="schedule-item">${s}</div>`).join('');
-            
-            resultDiv.innerHTML = `
-                <div class="schedule-card" style="margin-top:20px;">
-                    ${isFullDay ? '<div class="full-day-badge">Full Day With Lab</div>' : ''}
-                    <div style="font-size: 18px; font-weight: 600; color: #fff;">${nameInput}</div>
-                    <div class="vertical-list">${verticalSchedule}</div>
-                </div>`;
-        } else {
-            resultDiv.innerHTML = `<div class="schedule-card">No classes scheduled for ${day}.</div>`;
+    if (!student) {
+        resultDiv.innerHTML =
+            `<span style="color:red;font-weight:bold;">
+                Student name not found.
+            </span>`;
+        return;
+    }
+
+    const scheduleText = student[day] as string | undefined;
+
+    if (!scheduleText) {
+        resultDiv.innerHTML =
+            `<div class="schedule-card">
+                No classes scheduled for ${day}.
+            </div>`;
+        return;
+    }
+
+    const sessions = scheduleText
+        .split(",")
+        .map(s => s.trim());
+
+    // Process each session to extract time and subject
+    const timeSlots = sessions.map(session => {
+        // Handle time range sessions: "09.00-11.30: Lab"
+        const timeRangeMatch = session.match(/(\d{2}\.\d{2})-(\d{2}\.\d{2}):\s*(.+)/);
+        if (timeRangeMatch) {
+            const startTime = timeRangeMatch[1].replace('.', ':');
+            const endTime = timeRangeMatch[2].replace('.', ':');
+            const subject = timeRangeMatch[3].trim();
+            const timeDisplay = `${startTime} - ${endTime}`;
+            return { time: timeDisplay, subject };
         }
+        
+        // Handle single time sessions: "13.00-14.00: TE"
+        const singleTimeMatch = session.match(/(\d{2}\.\d{2}):\s*(.+)/);
+        if (singleTimeMatch) {
+            const timeDisplay = `${singleTimeMatch[1].replace('.', ':')} - ${singleTimeMatch[2].replace('.', ':')}`;
+            return { time: timeDisplay, subject: singleTimeMatch[3].trim() };
+        }
+        
+        // Handle sessions without time: "DBS, PAO"
+        else {
+            return { time: '', subject: session.trim() };
+        }
+    }).filter((slot): slot is { time: string; subject: string } => slot !== null);
+
+    // Create time slots with proper break handling
+    const processedSlots: { time: string; subject: string }[] = [];
+    let currentTime = 8; // Start from 8 AM
+    
+    timeSlots.forEach((slot: { time: string; subject: string }) => {
+        if (slot.time.includes('-')) {
+            // Time range session - add as is
+            const subjects = slot.subject.split(',').map((s: string) => s.trim());
+            subjects.forEach((subject) => {
+                processedSlots.push({ time: slot.time, subject });
+            });
+            // Update current time to the end of this session
+            const endTime = parseInt(slot.time.split('-')[1]);
+            if (endTime > currentTime) {
+                currentTime = endTime;
+            }
+        } else if (slot.time !== '') {
+            // Subject without time - assign sequential slots
+            const subjects = slot.subject.split(',').map((s: string) => s.trim());
+            subjects.forEach((subject, index) => {
+                // Simple sequential assignment: 8-9, 9-10, 10-11, 11-12, 12-1, 1-2, 2-3, 3-4
+                const slotStart = currentTime + index;
+                const slotEnd = slotStart + 1;
+                const timeSlot = `${slotStart.toString().padStart(2, '0')}:00 - ${slotEnd.toString().padStart(2, '0')}`;
+                processedSlots.push({ time: timeSlot, subject });
+                currentTime++;
+            });
+        }
+    });
+
+    // Check if there's any lab in the schedule
+    const hasLab = sessions.some(session => session.toLowerCase().includes('lab'));
+
+    // Determine day type badge
+    let dayTypeBadge = '';
+    if (hasLab) {
+        dayTypeBadge = '<div class="full-day-badge">Full Day With Lab</div>';
+    } else if (timeSlots.length > 0) {
+        dayTypeBadge = '<div class="half-day-badge">Half Day</div>';
+    }
+
+    if (processedSlots.length > 0) {
+        const verticalSchedule = processedSlots
+            .map(slot => `<div class="schedule-item">${slot.time} - ${slot.subject}</div>`)
+            .join("");
+
+        resultDiv.innerHTML = `
+            <div class="schedule-card" style="margin-top:20px;">
+                ${dayTypeBadge}
+                <div style="font-size:18px;font-weight:600;color:#fff;">
+                    ${nameInput}
+                </div>
+                <div class="vertical-list">
+                    ${verticalSchedule}
+                </div>
+            </div>`;
     } else {
-        resultDiv.innerHTML = `<span style="color:red; font-weight:bold;">Student name not found.</span>`;
+        resultDiv.innerHTML = `
+            <div class="schedule-card" style="margin-top:20px;">
+                <div style="font-size:18px;font-weight:600;color:#fff;">
+                    ${nameInput}
+                </div>
+                <div class="schedule-item">No classes scheduled</div>
+            </div>`;
     }
 }
 
-function logout() {
-    sessionStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('isAutoLoggedIn');
-    window.location.href = "login.html";
+
+// ===============================
+// LOGOUT
+// ===============================
+
+function logout(): void {
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("currentUser");
+    sessionStorage.removeItem("userRole");
+    localStorage.removeItem("isAutoLoggedIn");
+    window.location.href = "/";
 }

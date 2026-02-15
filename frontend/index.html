@@ -1,50 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OC Timetable Pro</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OC Timetable  - Home</title>
+  </head>
+  <body>
     <div class="background-circles"></div>
+    
     <div class="container">
-        <div class="box">
-            <header>
-                <h2>OC Timetable</h2>
-                <p>Select a student and day to view the schedule</p>
-            </header>
+      <div class="box">
+        <header>
+          <h2>OC Timetable </h2>
+          <p>Timetable management system</p>
+        </header>
 
-            <div class="input-group">
-    <label for="ocName">Student Name</label>
-    <select id="ocName" class="modern-select">
-        <option value="" disabled selected>Choose a student...</option>
-        </select>
-</div>
+        <div id="authSection">
+          <div class="input-group">
+            <label for="user">Username</label>
+            <input type="text" id="user" placeholder="Enter your username" />
+          </div>
 
-<div class="input-group">
-    <label for="day">Day of Week</label>
-    <select id="day" class="modern-select">
-        <option value="" disabled selected>Select day...</option>
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-    </select>
-</div>
+          <div class="input-group">
+            <label for="pass">Password</label>
+            <input type="password" id="pass" placeholder="Enter your password" />
+          </div>
 
-            <button onclick="showTimetable()" class="btn-show">Check Schedule</button>
+          <div id="loginActions">
+            <button id="loginBtn" class="btn-show">Login</button>
+            <p style="margin-top: 15px; text-align: center; color: #94a3b8;">
+              Don't have an account? 
+              <a href="#" onclick="toggleAuth(true)" style="color: var(--accent);">Register here</a>
+            </p>
+          </div>
 
-            <div id="result" class="result-container"></div>
+          <div id="registerActions" style="display: none;">
+            <button id="registerBtn" class="btn-show">Create Account</button>
+            <p style="margin-top: 15px; text-align: center; color: #94a3b8;">
+              Already have an account? 
+              <a href="#" onclick="toggleAuth(false)" style="color: var(--accent);">Login here</a>
+            </p>
+          </div>
 
-            <div class="auth-footer" style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                <button onclick="logout()" class="btn-logout">Logout from Session</button>
-            </div>
+          <div id="authMsg" style="margin-top: 15px; text-align: center; font-size: 14px;"></div>
         </div>
+      </div>
     </div>
-    <script src="js/script.js"></script>
-</body>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
